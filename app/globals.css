@@ -1,7 +1,11 @@
 @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
-
+@tailwind components;
+@tailwind utilities;
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
   @layer base {
     :root {
       --background: 0 0% 100%;
@@ -73,4 +77,8 @@
     body {
       @apply bg-background text-foreground;
     }
+  }
+
+  .radialbg{
+    @apply p-10 min-h-screen w-full flex-col flex items-center justify-center bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-white to-black
   }
