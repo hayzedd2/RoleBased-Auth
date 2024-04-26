@@ -22,28 +22,28 @@ import { register } from "@/actions/register";
 import { useState } from "react";
 import { Poppins } from "next/font/google";
 
-const poppins = Poppins({ subsets: ["latin"],weight :['400','700'] });
+const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 
 export const RegisterForm = () => {
   const [isPending, startTransition] = useTransition();
-  const [error , setError] = useState<string | undefined>("")
-  const [success, setSuccess] = useState<string | undefined>("")
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
       email: "",
       password: "",
-      name: ""
+      name: "",
     },
   });
   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
-    setError("")
-    setSuccess("")
+    setError("");
+    setSuccess("");
     startTransition(() => {
-      register(values).then((data)=>{
-        setError(data.error)
-        setSuccess(data.successs)
-      })
+      register(values).then((data) => {
+        setError(data.error);
+        setSuccess(data.successs);
+      });
     });
   };
   return (
@@ -56,6 +56,23 @@ export const RegisterForm = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      placeholder="johndoe"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            ></FormField>
             <FormField
               control={form.control}
               name="email"
@@ -74,24 +91,7 @@ export const RegisterForm = () => {
                 </FormItem>
               )}
             ></FormField>
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      placeholder="johndoe"
-                      
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            ></FormField>
+
             <FormField
               control={form.control}
               name="password"
