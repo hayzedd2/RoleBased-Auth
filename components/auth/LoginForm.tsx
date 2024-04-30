@@ -21,11 +21,17 @@ import { FormSuccess } from "../custom-components/FormSuccess";
 import { login } from "@/actions/login";
 import { useState } from "react";
 import { Poppins } from "next/font/google";
+import { useSearchParams } from "next/navigation";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 
 export const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
+  const searchParams = useSearchParams();
+  const urlError =
+    searchParams.get("error") === "OAuthAccountNotLinked"
+      ? "Email already in use with another provider"
+      : "";
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -93,7 +99,7 @@ export const LoginForm = () => {
               )}
             ></FormField>
           </div>
-          <FormError message={error} />
+          <FormError message={error || urlError} />
           <FormSuccess message={success} />
           <Button type="submit" disabled={isPending} className="w-full">
             {!isPending ? (
