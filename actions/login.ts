@@ -16,6 +16,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
   }
   const { email, password } = validatedValues.data;
   const existingUser = await getUserByEmail(email);
+
   if (!existingUser || !existingUser.email || !existingUser.password) {
     return { error: "Email or password do not match" };
   }

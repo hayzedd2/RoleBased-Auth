@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
-import {Kumbh_Sans} from 'next/font/google'
-import { Poppins } from "next/font/google";
+import { Kumbh_Sans } from "next/font/google";
 import "./globals.css";
-
-const poppins = Poppins({ subsets: ["latin"],weight :['400','700'] });
-const kumbh = Kumbh_Sans({subsets : ['latin']})
+const kumbh = Kumbh_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Role based app",
