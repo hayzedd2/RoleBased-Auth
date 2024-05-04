@@ -3,7 +3,7 @@ import * as z from "zod";
 import { CardWrapper } from "./CardWrapper";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginSchema } from "@/schema";
+import { ResetSchema } from "@/schema";
 import { useTransition } from "react";
 import { RotatingLines } from "react-loader-spinner";
 import {
@@ -18,35 +18,28 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { FormError } from "../custom-components/FormError";
 import { FormSuccess } from "../custom-components/FormSuccess";
-import { login } from "@/actions/login";
 import { useState } from "react";
 import { Poppins } from "next/font/google";
-import { useSearchParams } from "next/navigation";
-import Link from "next/link";
-
+import { reset } from "@/actions/reset";
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 
-export const LoginForm = () => {
+export const ResetForm = () => {
   const [isPending, startTransition] = useTransition();
-  const searchParams = useSearchParams();
-  const urlError =
-    searchParams.get("error") === "OAuthAccountNotLinked"
-      ? "Email already in use with another provider"
-      : "";
+
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<z.infer<typeof ResetSchema>>({
+    resolver: zodResolver(ResetSchema),
     defaultValues: {
       email: "",
-      password: "",
     },
   });
-  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+  const onSubmit = (values: z.infer<typeof ResetSchema>) => {
     setError("");
     setSuccess("");
+    console.log(values)
     startTransition(() => {
-      login(values).then((data) => {
+      reset(values).then((data) => {
         setError(data?.error);
         setSuccess(data?.success);
       });
@@ -54,10 +47,9 @@ export const LoginForm = () => {
   };
   return (
     <CardWrapper
-      headerLabel="Welcome Back"
-      backButtonLabel="Don't have an account?"
-      backButtonHref="/auth/register"
-      showSocials
+      headerLabel="Forgot your password?"
+      backButtonLabel="Back to login"
+      backButtonHref="/auth/login"
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -80,39 +72,12 @@ export const LoginForm = () => {
                 </FormItem>
               )}
             ></FormField>
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="password">Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      className={poppins.className}
-                      placeholder="*******"
-                      type="password"
-                    />
-                  </FormControl>
-                  <Button
-                    className="px-0"
-                    size={"sm"}
-                    variant={"link"}
-                    asChild
-                  >
-                    <Link href={"/auth/reset"}>Forgot password?</Link>
-                  </Button>
-                  <FormMessage />
-                </FormItem>
-              )}
-            ></FormField>
           </div>
-          <FormError message={error || urlError} />
+          <FormError message={error} />
           <FormSuccess message={success} />
           <Button type="submit" disabled={isPending} className="w-full">
             {!isPending ? (
-              <p>Login</p>
+              <p>Send reset email</p>
             ) : (
               <RotatingLines
                 visible={true}
