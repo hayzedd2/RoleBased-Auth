@@ -12,7 +12,14 @@ export const sendVerificationToken = async (email: string, token: string) => {
     html: `<p>Click <a href="${confirmLink}">here<a/> to confirm email.</p>`,
   });
 };
-
+export const sendTwoFactorToken = async (email: string, token: string) => {
+  await resend.emails.send({
+    from: "onboarding@resend.dev",
+    to: email,
+    subject: "2FA code",
+    html: `<p>Your Code is ${token}</p>`,
+  });
+};
 
 export const sendPasswordResetToken = async (email: string, token: string) => {
   const resetLink = `http://localhost:3000/auth/new-password?token=${token}`;
