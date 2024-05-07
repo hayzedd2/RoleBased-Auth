@@ -63,7 +63,6 @@ export const LoginForm = () => {
           setSuccess(data.success);
         }
         if (data?.twofactor) {
-          form.reset();
           setShowTwoFactor(true);
         }
       });
@@ -187,6 +186,7 @@ export const LoginForm = () => {
                 ariaLabel="rotating-lines-loading"
               />
             )}
+            {/* {showTwoFcator ? "Confirm" : "Login"} */}
           </Button>
         </form>
       </Form>

@@ -15,13 +15,11 @@ import { db } from "@/lib/db";
 import { getTwoFactorConfirmationByUserId } from "@/data/twoFactorConfirmation";
 import { getTwoFactorTokenByEmail } from "@/data/twoFactorToken";
 export const login = async (values: z.infer<typeof LoginSchema>) => {
-  console.log(values);
   const validatedValues = LoginSchema.safeParse(values);
   if (!validatedValues.success) {
     return { error: "Invalid Fields" };
   }
   const { email, password, code } = validatedValues.data;
-  console.log(code)
   const existingUser = await getUserByEmail(email);
 
   if (!existingUser || !existingUser.email || !existingUser.password) {
@@ -44,7 +42,6 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
   }
   if (existingUser.isTwoFactorEnabled && existingUser.email) {
     if (code) {
-      console.log("me");
       const twoFactorToken = await getTwoFactorTokenByEmail(existingUser.email);
       if (!twoFactorToken) {
         return { error: "Inavlid token" };
@@ -69,16 +66,15 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
           },
         });
       }
-      await db.twoFactorConfirmation.findUnique({
-        where: {
-          userId: existingUser.id,
-        },
-      });
+      await db.twoFactorConfirmation.create({
+        data:{
+          userId : existingUser.id
+        }
+      })
     } else {
       const twoFactorToken = await generateTwoFactorToken(existingUser.email);
       await sendTwoFactorToken(twoFactorToken.email, twoFactorToken.token);
-      console.log("Sent");
-      console.log({code})
+      console.log({ elseValues: values });
       return { twofactor: true };
     }
   }
