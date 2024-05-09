@@ -1,5 +1,6 @@
 "use client";
 
+import { UserButton } from "@/components/auth/UserButton";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -23,7 +24,7 @@ export const Navbar = () => {
         </Button>
       </div>
       <div>
-        <p>UserButton</p>
+        <UserButton/>
       </div>
     </nav>
   );
