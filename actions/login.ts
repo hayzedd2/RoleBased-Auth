@@ -67,11 +67,12 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
         });
       }
       await db.twoFactorConfirmation.create({
-        data:{
-          userId : existingUser.id
-        }
-      })
-    } else {
+        data: {
+          userId: existingUser.id,
+        },
+      });
+    }
+    else {
       const twoFactorToken = await generateTwoFactorToken(existingUser.email);
       await sendTwoFactorToken(twoFactorToken.email, twoFactorToken.token);
       console.log({ elseValues: values });

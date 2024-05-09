@@ -55,7 +55,6 @@ export const LoginForm = () => {
     startTransition(() => {
       login(values).then((data) => {
         if (data?.error) {
-          form.reset();
           setError(data.error);
         }
         if (data?.success) {
@@ -79,42 +78,42 @@ export const LoginForm = () => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4">
             {showTwoFcator && (
-              // <FormField
-              //   control={form.control}
-              //   name="code"
-              //   render={({ field }) => (
-              //     <FormItem>
-              //       <FormLabel>Two-factor code</FormLabel>
-              //       <FormControl>
-              //         <InputOTP maxLength={6} {...field} disabled={isPending}>
-              //           <InputOTPGroup>
-              //             <InputOTPSlot index={0} />
-              //             <InputOTPSlot index={1} />
-              //             <InputOTPSlot index={2} />
-              //             <InputOTPSeparator />
-              //             <InputOTPSlot index={3} />
-              //             <InputOTPSlot index={4} />
-              //             <InputOTPSlot index={5} />
-              //           </InputOTPGroup>
-              //         </InputOTP>
-              //       </FormControl>
-              //       <FormMessage />
-              //     </FormItem>
-              //   )}
-              // ></FormField>
               <FormField
                 control={form.control}
                 name="code"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Code</FormLabel>
+                    <FormLabel>Two-factor code</FormLabel>
                     <FormControl>
-                      <Input {...field} disabled={isPending} />
+                      <InputOTP maxLength={6} {...field} disabled={isPending}>
+                        <InputOTPGroup>
+                          <InputOTPSlot index={0} />
+                          <InputOTPSlot index={1} />
+                          <InputOTPSlot index={2} />
+                          <InputOTPSeparator />
+                          <InputOTPSlot index={3} />
+                          <InputOTPSlot index={4} />
+                          <InputOTPSlot index={5} />
+                        </InputOTPGroup>
+                      </InputOTP>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               ></FormField>
+              // <FormField
+              //   control={form.control}
+              //   name="code"
+              //   render={({ field }) => (
+              //     <FormItem>
+              //       <FormLabel>Code</FormLabel>
+              //       <FormControl>
+              //         <Input {...field} disabled={isPending} />
+              //       </FormControl>
+              //       <FormMessage />
+              //     </FormItem>
+              //   )}
+              // ></FormField>
             )}
 
             {!showTwoFcator && (
