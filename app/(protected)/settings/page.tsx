@@ -1,7 +1,8 @@
-"use client";
+import { SettingsForm } from "@/components/auth/SettingsForm";
+import React from "react";
 
-const settingsPage = () => {
-  return <div>SettingsPage</div>;
+const SettingsPage = () => {
+  return <SettingsForm />;
 };
 
-export default settingsPage;
+export default SettingsPage;
