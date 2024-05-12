@@ -1,8 +1,10 @@
-import { SettingsForm } from "@/components/auth/SettingsForm";
+import { CurrentUser } from "@/lib/authServer";
 import React from "react";
+import { UserInfo } from "../_components/UserInfo";
 
-const SettingsPage = () => {
-  return <SettingsForm />;
+const SettingsPage = async () => {
+  const user = await CurrentUser();
+  return <UserInfo label="User Info" user={user} />;
 };
 
 export default SettingsPage;

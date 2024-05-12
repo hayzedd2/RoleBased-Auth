@@ -75,7 +75,7 @@ export const LoginForm = () => {
       showSocials
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} autoComplete="off" className="space-y-6">
           <div className="space-y-4">
             {showTwoFcator && (
               <FormField
