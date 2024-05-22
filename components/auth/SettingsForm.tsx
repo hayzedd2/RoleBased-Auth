@@ -11,6 +11,8 @@ import * as z from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { Input } from "../ui/input";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { FormError } from "../custom-components/FormError";
+import { FormSuccess } from "../custom-components/FormSuccess";
 export const SettingsForm = () => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
@@ -20,6 +22,7 @@ export const SettingsForm = () => {
     resolver: zodResolver(SettingsSchema),
     defaultValues: {
       name: user?.name || undefined,
+      email: user?.email || undefined,
     },
   });
 
@@ -58,7 +61,43 @@ export const SettingsForm = () => {
                   </FormItem>
                 )}
               ></FormField>
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={isPending}
+                        placeholder="johndoe@example.com"
+                        type="email"
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              ></FormField>
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={isPending}
+                        placeholder="johndoe@example.com"
+                        type="email"
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              ></FormField>
             </div>
+            <FormError message={error} />
+            <FormSuccess message={success} />
             <Button type="submit" disabled={isPending}>
               Save Changes
             </Button>
