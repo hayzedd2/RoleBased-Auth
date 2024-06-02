@@ -12,7 +12,15 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { Input } from "../ui/input";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { FormError } from "../custom-components/FormError";
-import { FormSuccess } from "../custom-components/FormSuccess";
+import { FormSuccess } from "../custom-components/FormSuccess"
+import { UserRole } from "@prisma/client";
+import {
+  Select,
+  SelectContent,
+  SelectTrigger,
+  SelectValue,
+  SelectItem,
+} from "../ui/select";
 export const SettingsForm = () => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
@@ -23,6 +31,9 @@ export const SettingsForm = () => {
     defaultValues: {
       name: user?.name || undefined,
       email: user?.email || undefined,
+      password: undefined,
+      newPassword: undefined,
+      role : user?.role || undefined
     },
   });
 
@@ -80,16 +91,57 @@ export const SettingsForm = () => {
               ></FormField>
               <FormField
                 control={form.control}
-                name="email"
+                name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         disabled={isPending}
-                        placeholder="johndoe@example.com"
-                        type="email"
+                        placeholder="******"
+                        type="password"
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              ></FormField>
+              <FormField
+                control={form.control}
+                name="role"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Role</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      disabled={isPending}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a role"></SelectValue>
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value={UserRole.ADMIN}>Admin</SelectItem>
+                        <SelectItem value={UserRole.USER}>User</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              ></FormField>
+              <FormField
+                control={form.control}
+                name="newPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>New Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={isPending}
+                        placeholder="******"
+                        type="password"
                       />
                     </FormControl>
                   </FormItem>
